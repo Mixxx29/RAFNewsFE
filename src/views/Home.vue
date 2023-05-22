@@ -15,12 +15,12 @@ defineProps({
 
 <style scoped>
 
-#home {
-  height: 100vh;
-  display: flex;
-  font-weight: normal;
-  justify-content: center;
-  align-items: center;
-}
+  #home {
+    height: 100vh;
+    display: flex;
+    font-weight: normal;
+    justify-content: center;
+    align-items: center;
+  }
 
 </style>

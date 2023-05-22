@@ -1,23 +1,40 @@
 <template>
   <div id="users">
     <h1>Users</h1>
-    <table class="table">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Username</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th>Password</th>
-      </tr>
-      </thead>
-      <tbody v-for="user in users" :key="user.id">
-        <UserRow :user="user"/>
-      </tbody>
-    </table>
+    <div v-if="users == null" id="spinner" class="spinner-border text-secondary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div v-else>
+        <table class="table">
+            <thead class="bg-dark">
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Password</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <UserRow v-for="user in users" :key="user.id" :user="user"/>
+            <tr id="last-row">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-success">Create New</button>
+    </div>
   </div>
 </template>
 
@@ -29,7 +46,7 @@ export default {
   components: {UserRow},
   data() {
       return {
-        users: []
+        users: null
       }
   },
   mounted() {
@@ -47,8 +64,32 @@ export default {
     margin: 5vh auto;
   }
 
+  #spinner {
+      margin-top: 5vh;
+      scale: 2;
+  }
+
   .table {
     width: 80%;
     margin: auto;
+  }
+
+  tr {
+      align-items: center;
+  }
+
+  th {
+      color: whitesmoke;
+      border: whitesmoke solid 1px;
+  }
+
+  #last-row {
+      border: hidden;
+      border-top: black 1px solid;
+  }
+
+  button {
+      width: 10%;
+      margin-top: 2vh;
   }
 </style>
