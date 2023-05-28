@@ -22,20 +22,18 @@
                             {{ item[column.field] }}
                         </td>
                         <td>
-                            <button type="button" class="edit-button btn btn-primary">Edit</button>
-                            <button type="button" class="delete-button btn btn-danger">Delete</button>
+                            <button type="button" @click="openEditFormCallback(item.id)" class="edit-button btn btn-primary">Edit</button>
+                            <button type="button" @click="deleteItemCallback(item)" class="delete-button btn btn-danger">Delete</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="create-button btn btn-success">Create New</button>
+            <button type="button" @click="openCreateFormCallback" class="create-button btn btn-success">Create New</button>
         </div>
     </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
     name: "GenericTable",
     props: {
@@ -43,32 +41,31 @@ export default {
             type: Array,
             required: true
         },
-        api: {
-            type: String,
+        items: {
+            type: Array,
             required: true
         },
         rowClassCallback: {
             type: Function,
             default: () => { return ""; }
+        },
+        openCreateFormCallback: {
+            type: Function,
+            required: true
+        },
+        openEditFormCallback: {
+            type: Function,
+            required: true
+        },
+        deleteItemCallback: {
+            type: Function,
+            required: true
         }
-    },
-    data() {
-        return {
-            items: null
-        }
-    },
-    mounted() {
-        this.fetchData();
     },
     methods: {
-        fetchData() {
-            axios.get(this.api).then(items => {
-                this.items = items.data;
-            }).catch(error => console.log(error.message));
-        },
         getRowClass(item) {
             return this.rowClassCallback(item);
-        }
+        },
     }
 }
 </script>
