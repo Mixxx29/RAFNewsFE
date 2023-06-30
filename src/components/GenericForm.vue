@@ -1,6 +1,6 @@
 <template>
-    <div id="edit-form">
-        <form @submit.prevent="onSubmit(formData)">
+    <div class="form">
+        <form @submit.prevent="onSubmit">
             <div v-for="field in fields" :key="field.name">
                 <label :for="field.name">{{ field.label }}</label>
                 <select v-if="field.type === 'select'"
@@ -14,6 +14,12 @@
                         {{ option.label }}
                     </option>
                 </select>
+                <textarea v-else-if="field.type === 'textarea'"
+                          v-model="formData[field.name]"
+                          class="form-control"
+                          rows="5"
+                          :placeholder="'Enter ' + field.label">
+                </textarea>
                 <input v-else
                        class="form-control"
                        :type="field.type"
@@ -21,32 +27,43 @@
                        v-model="formData[field.name]"
                        :placeholder="'Enter ' + field.label"/>
             </div>
-            <button type="submit" class="btn btn-success">Save</button>
-            <button type="button" @click="cancelCallback" class="btn btn-outline-dark">Cancel</button>
+            <button type="submit" :class="'btn ' + buttonClass">{{ actionName }}</button>
+            <button v-if="cancelCallback" type="button" @click="cancelCallback" class="btn btn-outline-dark">
+                Cancel
+            </button>
         </form>
     </div>
 </template>
 
 <script>
-export default {
-    name: "GenericEditForm",
+import {defineComponent} from "vue";
+
+export default defineComponent({
+    name: "GenericForm",
     props: {
+        item: {
+            type: Object,
+            default: null
+        },
+        actionName: {
+          type: String,
+          required: true
+        },
+        buttonClass: {
+            type: String,
+            required: true
+        },
         fields: {
             type: Array,
             required: true
         },
-        editDataCallback: {
+        actionCallback: {
             type: Function,
             required: true
         },
         cancelCallback: {
-            type: Function,
-            required: true
+            type: Function
         },
-        item: {
-            type: Object,
-            required: true
-        }
     },
     data() {
         return {
@@ -54,28 +71,32 @@ export default {
         }
     },
     methods: {
-        onSubmit(data) {
-            this.editDataCallback(data);
-            this.cancelCallback();
+        onSubmit() {
+            this.actionCallback(this.formData);
+            if (this.cancelCallback) this.cancelCallback();
         }
     },
-    mounted() {
-        this.formData = this.item;
+    beforeMount() {
+        if (this.item != null) this.formData = this.item;
         for (const field of this.fields) {
             if (field.type === "select") {
                 for (const option of field.options) {
-                    if (option.label === this.formData[field.name]) {
-                        this.formData[field.name] = option.value;
+                    if (this.item != null) {
+                        if (option.label === this.formData[field.name]) {
+                            this.formData[field.name] = option.value;
+                        }
+                        continue;
                     }
+                    this.formData[field.name] = null;
                 }
             }
         }
-    }
-}
+    },
+})
 </script>
 
 <style scoped>
-    #edit-form {
+    .form {
         width: 30%;
         margin: auto;
     }

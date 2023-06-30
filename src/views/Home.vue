@@ -1,10 +1,8 @@
-<script setup>
-defineProps({
-  msg: {
-    type: String,
-    required: true
-  }
-})
+<script>
+
+export default {
+    name: "Home.vue"
+}
 </script>
 
 <template>

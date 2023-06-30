@@ -34,7 +34,9 @@
 </template>
 
 <script>
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
     name: "GenericTable",
     props: {
         columns: {
@@ -67,7 +69,7 @@ export default {
             return this.rowClassCallback(item);
         },
     }
-}
+})
 </script>
 
 <style scoped>
