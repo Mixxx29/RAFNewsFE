@@ -1,37 +1,34 @@
 <template>
   <div id="users">
     <h1>{{ title }}</h1>
-    <div v-if="displayIndex === 0">
       <GenericTable
+          v-if="displayIndex === 0"
           :columns="columns"
           :delete-item-callback="deleteData"
           :items="items"
           :open-create-form-callback="openCreateForm"
           :open-edit-form-callback="openEditForm"
           :row-class-callback="getRowClass"/>
-    </div>
-    <div v-if="displayIndex === 1">
+      <Pagination
+          v-if="displayIndex === 0"
+          :last-page="lastPage"
+          :on-click="getPage"
+          :page-index="1"/>
       <GenericForm
+          v-if="displayIndex === 1"
           :action-callback="createData"
           :cancel-callback="cancel"
           :fields="fields"
           action-name="Create"
           button-class="btn-success"/>
-    </div>
-    <div v-if="displayIndex === 2">
       <GenericForm
+          v-if="displayIndex === 2"
           :action-callback="saveData"
           :cancel-callback="cancel"
           :fields="fields"
           :item="item"
           action-name="Save"
           button-class="btn-primary"/>
-    </div>
-    <Pagination
-        v-if="displayIndex === 0"
-        :last-page="lastPage"
-        :on-click="getPage"
-        :page-index="1"/>
   </div>
 </template>
 

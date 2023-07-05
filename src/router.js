@@ -8,12 +8,48 @@ import api from "@/api";
 import {token, TYPE, username} from "@/global";
 import jwtDecode from "jwt-decode";
 import NewsTable from "@/views/NewsTable.vue";
+import SingleNews from "@/views/SingleNews.vue";
 
 const routes = [
     {
         path: '/',
-        name: 'Home',
         component: Home,
+        props: {
+            api: "http://localhost:8080/news/latest?direction=DESC",
+            title: "Latest News"
+        },
+        meta: {
+            authenticate: true
+        }
+    },
+    {
+        path: '/popular',
+        component: Home,
+        props: {
+            api: "http://localhost:8080/news/popular?direction=DESC",
+            title: "Popular News"
+        },
+        meta: {
+            authenticate: true
+        }
+    },
+    {
+        path: '/category/:category',
+        component: Home,
+        props: route => ({
+            api: `http://localhost:8080/news/category?name=${route.params.category}`,
+            title: `${route.params.category}`
+        }),
+        meta: {
+            authenticate: true
+        }
+    },
+    {
+        path: '/news/:title',
+        component: SingleNews,
+        props: route => ({
+            title: route.params.title
+        }),
         meta: {
             authenticate: true
         }

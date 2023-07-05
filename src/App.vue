@@ -4,7 +4,7 @@ import {token, username} from "@/global";
 import {provide} from "vue";
 
 export default {
-    name:"",
+    name: "",
     components: {Header},
     setup() {
         provide('token', token);
@@ -19,7 +19,7 @@ export default {
 
 <template>
     <Header/>
-    <router-view></router-view>
+    <router-view/>
 </template>
 
 <style>

@@ -1,4 +1,3 @@
-
 import {ref, watch} from 'vue';
 
 const token = ref(localStorage.getItem('token') || '');
